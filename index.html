@@ -847,7 +847,7 @@ let currentUser = null;
 async function signInWithGitHub() {
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'github',
-    options: { redirectTo: window.location.href }
+    options: { redirectTo: 'https://shahriar-nahid.github.io/walk2save' }
   });
   if (error) showToast('⚠ Login failed: ' + error.message);
 }
