@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walk2Save</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+:root {
+  --md-primary: #1B6EF3;
+  --md-primary-container: #D9E2FF;
+  --md-on-primary: #fff;
+  --md-on-primary-container: #001258;
+  --md-secondary: #00897B;
+  --md-secondary-container: #B2DFDB;
+  --md-on-secondary-container: #00251F;
+  --md-tertiary: #E65100;
+  --md-tertiary-container: #FFE0CC;
+  --md-on-tertiary-container: #4A1700;
+  --md-surface: #F6F8FF;
+  --md-surface-variant: #E1E2EC;
+  --md-surface-container: #ECEEF8;
+  --md-surface-container-high: #E6E8F2;
+  --md-on-surface: #1A1C25;
+  --md-on-surface-variant: #44465F;
+  --md-outline: #757790;
+  --md-outline-variant: #C5C6D8;
+  --md-error: #BA1A1A;
+  --md-error-container: #FFDAD6;
+  --md-success: #1B873A;
+  --md-success-container: #C8F5D4;
+  --md-gold: #B5570A;
+  --md-gold-container: #FFDCC2;
+  --elevation-1: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --elevation-2: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.06);
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+}
+
+body {
+  background: #ECF0FF;
+  color: var(--md-on-surface);
+  font-family: 'Nunito Sans', sans-serif;
+  min-height: 100vh;
+  font-size: 15px;
+}
+
+header {
+  background: #fff;
+  border-bottom: 1px solid #e8ede8;
+  padding: 1.5rem 1.75rem 7rem;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.app-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--md-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.app-tagline {
+  font-size: 0.8rem;
+  color: var(--md-on-surface-variant);
+  margin-top: 0.3rem;
+  font-weight: 400;
+}
+
+.header-actions { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+.header-auth-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  border: 1.5px solid #00897B;
+  background: transparent;
+  color: #00897B;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.header-auth-btn:hover { background: #00897B; color: #fff; }
+
+.streak-chip {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+}
+
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-filled { background: #fff; color: var(--md-primary); box-shadow: var(--elevation-1); }
+.btn-filled:hover { background: #f0f3ff; box-shadow: var(--elevation-2); }
+.btn-tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.btn-tonal:hover { filter: brightness(0.95); }
+.btn-tonal-green { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+.btn-tonal-green:hover { filter: brightness(0.95); }
+.btn-text { background: transparent; color: var(--md-primary); padding: 0.4rem 0.8rem; }
+.btn-text:hover { background: var(--md-primary-container); }
+.btn-error { background: var(--md-error-container); color: var(--md-error); }
+.btn-error:hover { filter: brightness(0.95); }
+.btn-white-ghost { background: rgba(255,255,255,0.18); color: #fff; }
+.btn-white-ghost:hover { background: rgba(255,255,255,0.28); }
+
+.body-wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+  margin-top: 2rem;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 760px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 400px) { .stat-row { grid-template-columns: 1fr; } }
+
+.stat-card {
+  border-radius: var(--radius-lg);
+  padding: 1.2rem 1.3rem;
+  box-shadow: var(--elevation-2);
+}
+
+.stat-card.blue   { background: linear-gradient(135deg,#1565C0,#1976D2); color:#fff; }
+.stat-card.green  { background: linear-gradient(135deg,#00695C,#00897B); color:#fff; }
+.stat-card.indigo { background: linear-gradient(135deg,#283593,#3949AB); color:#fff; }
+.stat-card.slate  { background: linear-gradient(135deg,#37474F,#546E7A); color:#fff; }
+
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 0.4rem;
+}
+
+.stat-value {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-sub { font-size: 0.7rem; opacity: 0.75; margin-top: 0.35rem; font-weight: 600; }
+
+
+.card {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.25rem 1.5rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--md-on-surface-variant);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card-body { padding: 0 1.5rem 1.5rem; }
+
+.fare-pill {
+  display: flex; align-items: center;
+  background: var(--md-primary-container);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.fare-pill-label {
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--md-on-primary-container);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fare-pill input {
+  background: transparent; border: none;
+  color: var(--md-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.3rem; font-weight: 900;
+  width: 100%; outline: none;
+}
+
+.field { margin-bottom: 0.9rem; }
+
+.field label {
+  display: block;
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--md-on-surface-variant);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+
+.field input {
+  width: 100%;
+  background: var(--md-surface-container);
+  border: 2px solid var(--md-outline-variant);
+  border-radius: var(--radius-sm);
+  color: var(--md-on-surface);
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.65rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -moz-appearance: textfield;
+}
+
+.field input::-webkit-outer-spin-button,
+.field input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.field input:focus { border-color: var(--md-primary); background: #fff; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: start; }
+.field-row .field { margin-bottom: 0; }
+
+/* ACTIVE GOAL */
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  align-items: start;
+}
+.section-grid > :first-child { grid-column: 1; }
+.section-grid > :last-child  { grid-column: 2 / 4; }
+@media (max-width: 720px) { .section-grid { grid-template-columns: 1fr; } .section-grid > :last-child { grid-column: 1; } }
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+@media (max-width: 700px) { .goals-grid { grid-template-columns: 1fr; } }
+
+/* ── Mobile styles ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .body-wrap { padding: 0.75rem; }
+  header { padding: 0.9rem 1rem; }
+  .app-title { font-size: 1.2rem; }
+  .app-tagline { font-size: 0.7rem; }
+  .streak-chip { font-size: 0.68rem; padding: 0.3rem 0.65rem; }
+
+  .stat-row { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .stat-card { padding: 0.85rem 1rem; }
+  .stat-value { font-size: 1.3rem; }
+
+  .goals-grid { grid-template-columns: 1fr; }
+  .section-grid { grid-template-columns: 1fr; }
+  .section-grid > :last-child { grid-column: 1; }
+
+  .log-card { border-radius: 14px; }
+  .card-header { flex-wrap: wrap; gap: 0.5rem; padding: 0.9rem 1rem 0; }
+  .card-body { padding: 0.9rem 1rem; }
+
+  /* Hide walk log table on mobile, show cards instead */
+  .walk-table-wrap { display: none; }
+  .walk-cards-wrap { display: block; }
+
+  .pagination { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.75rem 1rem; }
+}
+
+@media (min-width: 641px) {
+  .walk-cards-wrap { display: none; }
+  .walk-table-wrap { display: block; }
+}
+
+/* Walk log mobile cards */
+.walk-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--md-outline-variant);
+  gap: 0.5rem;
+}
+.walk-card-item:last-child { border-bottom: none; }
+.walk-card-left { flex: 1; min-width: 0; }
+.walk-card-date { font-size: 0.72rem; color: var(--md-on-surface-variant); margin-bottom: 0.15rem; }
+.walk-card-goal { font-size: 0.68rem; color: var(--md-on-surface-variant); margin-top: 0.15rem; opacity: 0.75; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.walk-card-dist { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--md-on-surface); }
+.walk-card-right { text-align: right; flex-shrink: 0; }
+.walk-card-saved { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--md-secondary); }
+.walk-card-total { font-size: 0.68rem; color: var(--md-on-surface-variant); margin-top: 0.1rem; }
+.active-goal-card {
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  color: #fff;
+  box-shadow: var(--elevation-2);
+  position: relative;
+  overflow: hidden;
+}
+.active-goal-card::before {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  top: -60px; right: -40px;
+  pointer-events: none;
+}
+/* Warm bold dark gradients for each goal slot */
+.goal-color-0 { background: linear-gradient(135deg,#B71C1C,#D32F2F); }
+.goal-color-1 { background: linear-gradient(135deg,#E65100,#F4511E); }
+.goal-color-2 { background: linear-gradient(135deg,#827717,#A09000); }
+.goal-color-3 { background: linear-gradient(135deg,#880E4F,#AD1457); }
+.goal-color-4 { background: linear-gradient(135deg,#4A148C,#6A1B9A); }
+
+.goal-card-inner { position: relative; z-index: 1; }
+
+.goal-tag {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(255,255,255,0.2);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.goal-name-display {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.4rem; font-weight: 900;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.01em;
+}
+
+.goal-amounts-row {
+  display: flex; align-items: baseline; gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.goal-current-val {
+  font-family: 'Nunito', sans-serif;
+  font-size: 2rem; font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.goal-of { font-size: 0.85rem; opacity: 0.75; font-weight: 600; }
+.goal-target-val {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem; font-weight: 700; opacity: 0.8;
+}
+
+.progress-track {
+  height: 10px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.7rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+.goal-footer {
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 0.6rem;
+}
+
+.goal-pct { font-size: 0.78rem; font-weight: 700; opacity: 0.9; }
+.goal-remaining-text { font-size: 0.78rem; font-weight: 700; }
+.goal-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* NO GOAL */
+.no-goal-placeholder {
+  background: var(--md-surface-container);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--md-outline-variant);
+  padding: 2rem; text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.no-goal-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.no-goal-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; color: var(--md-on-surface); margin-bottom: 0.3rem; }
+.no-goal-sub { font-size: 0.78rem; color: var(--md-on-surface-variant); margin-bottom: 1rem; }
+
+/* COMPLETED GOALS */
+.goals-history {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+}
+
+.goals-history-list { padding: 0 1.5rem 1.5rem; }
+
+.goal-hist-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--md-outline-variant);
+}
+
+.goal-hist-item:last-child { border-bottom: none; }
+
+.goal-hist-badge {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--md-success-container);
+  color: var(--md-success);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+}
+
+.goal-hist-info { flex: 1; min-width: 0; }
+
+.goal-hist-name {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 0.9rem;
+  color: var(--md-on-surface);
+  margin-bottom: 0.15rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.goal-hist-meta { font-size: 0.7rem; color: var(--md-on-surface-variant); font-weight: 600; }
+
+.goal-hist-amount {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 1rem;
+  color: var(--md-success); white-space: nowrap;
+}
+
+/* LOG TABLE */
+.log-card {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.table-scroll-wrap {
+  overflow-y: auto;
+  max-height: 460px;
+  /* custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-outline-variant) transparent;
+}
+.table-scroll-wrap::-webkit-scrollbar { width: 6px; }
+.table-scroll-wrap::-webkit-scrollbar-track { background: transparent; }
+.table-scroll-wrap::-webkit-scrollbar-thumb { background: var(--md-outline-variant); border-radius: 999px; }
+.table-scroll-wrap::-webkit-scrollbar-thumb:hover { background: var(--md-outline); }
+
+/* Sticky header inside scroll */
+.table-scroll-wrap thead tr { position: sticky; top: 0; z-index: 2; }
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  border-top: 1px solid var(--md-outline-variant);
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.pagination-info {
+  font-size: 0.72rem;
+  color: var(--md-on-surface-variant);
+  font-weight: 600;
+}
+
+.pagination-pages {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  min-width: 32px; height: 32px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  transition: all 0.15s;
+  padding: 0 0.5rem;
+}
+.page-btn:hover { background: var(--md-surface-container); color: var(--md-on-surface); }
+.page-btn.active { background: var(--md-primary); color: #fff; }
+.page-btn:disabled { opacity: 0.35; cursor: default; background: transparent; }
+
+.page-btn.prev-next {
+  font-size: 1rem;
+  padding: 0 0.4rem;
+}
+
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: var(--md-surface-container); }
+
+th {
+  padding: 0.75rem 1.25rem;
+  text-align: left;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--md-on-surface-variant);
+}
+
+th:nth-child(4), td:nth-child(4),
+th:nth-child(5), td:nth-child(5),
+th:nth-child(6), td:nth-child(6),
+th:last-child, td:last-child { text-align: right; }
+
+tbody tr { border-bottom: 1px solid var(--md-outline-variant); transition: background 0.15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--md-surface); }
+
+td { padding: 0.85rem 1.25rem; font-size: 0.84rem; }
+
+td.date-cell { color: var(--md-on-surface-variant); font-size: 0.78rem; font-weight: 600; }
+td.dist-cell { font-weight: 700; color: var(--md-primary); }
+td.saved-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(--md-secondary); }
+td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(--md-gold); }
+
+.del-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--md-outline);
+  font-size: 0.85rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.del-btn:hover { background: var(--md-error-container); color: var(--md-error); }
+
+.empty-state {
+  padding: 3.5rem 2rem;
+  text-align: center;
+  color: var(--md-on-surface-variant);
+}
+
+.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.empty-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; margin-bottom: 0.3rem; }
+.empty-sub { font-size: 0.78rem; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  width: min(440px, 92vw);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  transform: scale(0.96) translateY(10px);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+.modal-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--md-primary-container);
+  color: var(--md-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin-bottom: 1rem;
+}
+
+.modal-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.4rem; font-weight: 900;
+  color: var(--md-on-surface);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.modal-sub {
+  font-size: 0.8rem; color: var(--md-on-surface-variant);
+  margin-bottom: 1.5rem; line-height: 1.5;
+}
+
+.modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+
+/* ── Bottom Navigation ───────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1px solid #e8ede8;
+  display: flex;
+  align-items: stretch;
+  z-index: 200;
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+}
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #aab8a6;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.nav-tab svg { transition: transform 0.2s; }
+.nav-tab.active { color: #5a9e2f; }
+.nav-tab.active svg { transform: scale(1.15); }
+.nav-tab:not(.active):hover { color: #7ab050; }
+
+/* Active indicator pill */
+.nav-tab.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 3px;
+  background: #8BC34A;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Tab content panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Body padding for bottom nav */
+.body-wrap { padding-bottom: 80px; }
+
+.toast {
+  position: fixed; bottom: 5.5rem; right: 1.5rem;
+  background: var(--md-on-surface);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem; font-weight: 700;
+  padding: 0.85rem 1.3rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-2);
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  z-index: 300; max-width: 320px;
+}
+
+.toast.show { transform: translateY(0); opacity: 1; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="app-title" style="display:flex;align-items:center;gap:0.5rem;"><img src="data:image/png;base64,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" style="height:3rem;width:auto;object-fit:contain;background:transparent;display:block;" alt="Walk2Save logo"><span style="font-weight:900;letter-spacing:-0.01em;"><span style="color:#8BC34A;">Walk</span><span style="color:#FFC107;">2</span><span style="color:#00897B;">Save</span></span></div>
+      <div class="app-tagline">Turn your steps into savings</div>
+    </div>
+    <div class="header-actions">
+      <span class="streak-chip" id="streakBadge">🔥 0 day streak</span>
+      <div id="headerAuth"></div>
+    </div>
+  </div>
+</header>
+
+<div class="body-wrap">
+
+  <!-- ── Tab: Home ─────────────────────────────────────────────── -->
+  <div class="tab-panel active" id="tab-home">
+
+    <div class="stat-row">
+      <div class="stat-card blue">
+        <div class="stat-label">Total Distance</div>
+        <div class="stat-value" id="statDistance">0 km</div>
+        <div class="stat-sub" id="statWalks">0 walks</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Total Saved</div>
+        <div class="stat-value" id="statSaved">0</div>
+        <div class="stat-sub" id="statFareInfo">at 0/km</div>
+      </div>
+      <div class="stat-card indigo">
+        <div class="stat-label">This Week</div>
+        <div class="stat-value" id="statWeek">0</div>
+        <div class="stat-sub" id="statWeekDist">0 km this week</div>
+      </div>
+      <div class="stat-card slate">
+        <div class="stat-label">This Month</div>
+        <div class="stat-value" id="statMonth">0</div>
+        <div class="stat-sub" id="statMonthDist">0 km this month</div>
+      </div>
+    </div>
+
+    <div id="activeGoalSection"></div>
+
+  </div>
+
+  <!-- ── Tab: Log ──────────────────────────────────────────────── -->
+  <div class="tab-panel" id="tab-log">
+    <div class="log-card">
+      <div class="card-header">
+        <span class="card-title">Walk Log</span>
+        <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+          <span id="syncStatus" style="font-size:0.72rem;font-family:'Nunito',sans-serif;"></span>
+        </div>
+      </div>
+      <div id="logTable"></div>
+    </div>
+  </div>
+
+  <!-- ── Tab: History ──────────────────────────────────────────── -->
+  <div class="tab-panel" id="tab-history">
+    <div id="goalsHistorySection"></div>
+  </div>
+
+  <!-- ── Tab: Settings ─────────────────────────────────────────── -->
+  <div class="tab-panel" id="tab-settings">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Settings</span></div>
+      <div class="card-body">
+        <div class="fare-pill">
+          <span class="fare-pill-label">Fare / km</span>
+          <input type="number" id="fareInput" placeholder="e.g. 12" min="0" step="0.5" oninput="updateFare()">
+          <span class="fare-pill-label">/km</span>
+        </div>
+        <p style="font-size:0.72rem;color:var(--md-on-surface-variant);line-height:1.6;margin-bottom:1rem;">Set your average transport cost per km — used to calculate how much you save by walking instead of taking a ride.</p>
+
+        <div class="divider" style="height:1px;background:var(--md-outline-variant);margin:1rem 0;"></div>
+
+        <div style="background:rgba(186,26,26,0.07);border:1.5px solid rgba(186,26,26,0.2);border-radius:12px;padding:0.85rem 1rem;">
+          <div style="font-size:0.72rem;font-weight:800;color:var(--md-error);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:0.35rem;">⚠ Danger Zone</div>
+          <div style="font-size:0.7rem;color:var(--md-on-surface-variant);margin-bottom:0.65rem;line-height:1.5;">Permanently deletes all walks, goals and history. This cannot be undone.</div>
+          <button class="btn btn-error" style="font-size:0.75rem;padding:0.45rem 1rem;" onclick="clearAll()">🗑 Reset Everything</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Bottom Navigation ─────────────────────────────────────────── -->
+<nav class="bottom-nav">
+  <button class="nav-tab active" id="nav-home" onclick="switchTab('home')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    Home
+  </button>
+  <button class="nav-tab" id="nav-log" onclick="switchTab('log')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7z"/></svg>
+    Walk Log
+  </button>
+  <button class="nav-tab" id="nav-history" onclick="switchTab('history')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+    Goals
+  </button>
+  <button class="nav-tab" id="nav-settings" onclick="switchTab('settings')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+    Settings
+  </button>
+</nav>
+
+
+
+<!-- Goal Modal -->
+<div class="modal-overlay" id="goalModal">
+  <div class="modal">
+    <div class="modal-icon">🎯</div>
+    <div class="modal-title">New Savings Goal</div>
+    <div class="modal-sub">When you hit the target it gets archived automatically, and you can start a fresh goal.</div>
+    <div class="field"><label>Goal Name</label><input type="text" id="goalName" placeholder="e.g. New headphones, weekend trip…"></div>
+    <div class="field"><label>Target Amount</label><input type="number" id="goalAmount" placeholder="e.g. 5000" min="1"></div>
+    <div class="modal-actions">
+      <button class="btn btn-text" onclick="closeGoalModal()">Cancel</button>
+      <button class="btn btn-tonal" onclick="saveGoal()">Create Goal</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let state = {
+  fare: 0,
+  walks: [],
+  activeGoals: [],
+  completedGoals: []
+};
+let walkPage = 1;
+let goalPage = 1;
+const PAGE_SIZE = 10;
+
+function load() {
+  try {
+    const s = localStorage.getItem('walkSave3');
+    if (s) {
+      const parsed = JSON.parse(s);
+      // Migrate legacy single activeGoal → activeGoals array
+      if (parsed.activeGoal && !parsed.activeGoals) {
+        parsed.activeGoals = [parsed.activeGoal];
+        delete parsed.activeGoal;
+      }
+      if (!parsed.activeGoals) parsed.activeGoals = [];
+      state = { ...state, ...parsed };
+    }
+  } catch(e) {}
+}
+
+function persist() {
+  localStorage.setItem('walkSave3', JSON.stringify(state));
+}
+
+function fmt(n) {
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+async function init() {
+  load();
+  if (state.fare) {
+    state.walks = state.walks.map(w => w.fare == null ? { ...w, fare: state.fare } : w);
+    persist();
+  }
+  if (state.fare) document.getElementById('fareInput').value = state.fare;
+
+  // Listen for auth state changes (e.g. redirect back after GitHub login)
+  sb.auth.onAuthStateChange((event, session) => {
+    currentUser = session?.user || null;
+    renderAuth();
+    if (currentUser) {
+      render();
+      const streakEl = document.getElementById('streakBadge');
+      const indicatorTimer = setTimeout(() => {
+        if (streakEl) { streakEl.textContent = '⟳ Syncing…'; streakEl.style.opacity = '0.7'; }
+      }, 600);
+      loadFromSupabase(true).then(() => {
+        clearTimeout(indicatorTimer);
+        if (streakEl) streakEl.style.opacity = '';
+        if (state.fare) document.getElementById('fareInput').value = state.fare;
+      }).catch(err => {
+        clearTimeout(indicatorTimer);
+        if (streakEl) streakEl.style.opacity = '';
+        console.warn('Auth sync failed:', err.message);
+      });
+    } else {
+      render();
+      renderAuth();
+    }
+  });
+
+  // Check for existing session on open
+  const { data: { session } } = await sb.auth.getSession();
+  currentUser = session?.user || null;
+  renderAuth();
+  render(); // show local cache immediately
+
+  if (currentUser) {
+    // Show syncing indicator only after 600ms — hidden for fast connections
+    const streakEl = document.getElementById('streakBadge');
+    const indicatorTimer = setTimeout(() => {
+      if (streakEl) { streakEl.textContent = '⟳ Syncing…'; streakEl.style.opacity = '0.7'; }
+    }, 600);
+    loadFromSupabase(true).then(() => {
+      clearTimeout(indicatorTimer);
+      if (streakEl) streakEl.style.opacity = '';
+      if (state.fare) document.getElementById('fareInput').value = state.fare;
+    }).catch(err => {
+      clearTimeout(indicatorTimer);
+      if (streakEl) streakEl.style.opacity = '';
+      console.warn('Background sync failed:', err.message);
+    });
+  }
+  // Ensure auth section is always rendered
+  renderAuth();
+}
+
+function updateFare() {
+  const newFare = parseFloat(document.getElementById('fareInput').value) || 0;
+  // Stamp current fare onto any existing entries that don't have one locked yet
+  state.walks = state.walks.map(w => w.fare == null ? { ...w, fare: state.fare } : w);
+  state.fare = newFare;
+  persist(); render();
+}
+
+async function addWalk(date, dist, goalId) {
+  const fare = state.fare;
+  const id = Date.now();
+  const goal = (state.activeGoals || []).find(g => String(g.id) === String(goalId));
+  const walk = { id, date, dist, fare, goalId: goalId || null, goalName: goal ? goal.name : '' };
+  state.walks.push(walk);
+  state.walks.sort((a,b) => b.date.localeCompare(a.date));
+  walkPage = 1;
+  persist();
+  await checkGoalCompletion(goalId);
+  render();
+  showToast(`Logged ${dist} km — saved ${fmt(dist * fare)}!`);
+  await dbInsertWalk(walk);
+}
+
+async function logGoalWalk(goalId) {
+  const dateEl = document.getElementById(`gDate_${goalId}`);
+  const distEl = document.getElementById(`gDist_${goalId}`);
+  const date = dateEl ? dateEl.value : '';
+  const dist = distEl ? parseFloat(distEl.value) : NaN;
+  if (!date || !dist || dist <= 0) { showToast('Enter a valid date and distance'); return; }
+  if (distEl) distEl.value = '';
+  await addWalk(date, dist, goalId);
+}
+
+// ── Supabase ─────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://ovthffqitsydirzpipso.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_2GVtvJ7HjmNR8cxEKwZtCw_cbBkzQaD';
+const sb = (window.supabase || supabase).createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+
+async function signInWithGitHub() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo: 'https://shahriar-nahid.github.io/walk2save' }
+  });
+  if (error) showToast('⚠ Login failed: ' + error.message);
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  state = { fare: state.fare, walks: [], activeGoals: [], completedGoals: [] };
+  persist();
+  renderAuth();
+  render();
+  showToast('Signed out.');
+}
+
+function renderAuth() {
+  const headerEl = document.getElementById('headerAuth');
+  if (!headerEl) return;
+  const GH_SVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>`;
+  if (currentUser) {
+    const username = currentUser.user_metadata?.user_name || currentUser.email || 'User';
+    headerEl.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;">
+        <span style="font-family:'Nunito',sans-serif;font-size:0.68rem;font-weight:700;color:#00897B;display:flex;align-items:center;gap:0.3rem;">${GH_SVG} ${username}</span>
+        <button class="header-auth-btn" onclick="signOut()">Sign Out</button>
+      </div>`;
+  } else {
+    headerEl.innerHTML = `
+      <button class="header-auth-btn" onclick="signInWithGitHub()">
+        ${GH_SVG} Sign in with GitHub
+      </button>`;
+  }
+}
+
+// ── Supabase DB helpers ──────────────────────────────────────────────
+async function dbInsertWalk(walk) {
+  if (!currentUser) return;
+  const { error } = await sb.from('walks').insert({
+    id: walk.id,
+    date: walk.date,
+    dist: walk.dist,
+    fare: walk.fare,
+    goal_id: walk.goalId || null,
+    goal_name: walk.goalName || '',
+    user_id: currentUser.id,
+  });
+  if (error) console.error('Insert walk failed:', error);
+  else { state.walks = state.walks.map(w => w.id === walk.id ? { ...w, synced: true } : w); persist(); }
+}
+
+async function dbDeleteWalk(walk) {
+  if (!currentUser || !walk.id) return;
+  const { error } = await sb.from('walks').delete().eq('id', walk.id).eq('user_id', currentUser.id);
+  if (error) console.error('Delete walk failed:', error);
+}
+
+async function dbUpsertActiveGoal(goal) {
+  if (!currentUser) return;
+  const { error } = await sb.from('active_goals').upsert({
+    id: goal.id,
+    name: goal.name,
+    amount: goal.amount,
+    started_at: goal.startedAt,
+    user_id: currentUser.id,
+  }, { onConflict: 'id' });
+  if (error) console.error('Upsert active goal failed:', error);
+  else { state.activeGoals = state.activeGoals.map(g => g.id === goal.id ? { ...g, synced: true } : g); persist(); }
+}
+
+async function dbDeleteActiveGoal(goalId) {
+  if (!currentUser) return;
+  const { error } = await sb.from('active_goals').delete().eq('id', goalId).eq('user_id', currentUser.id);
+  if (error) console.error('Delete active goal failed:', error);
+}
+
+async function dbInsertCompletedGoal(goal) {
+  if (!currentUser) return;
+  const { error } = await sb.from('completed_goals').insert({
+    id: goal.id,
+    name: goal.name,
+    amount: goal.amount,
+    earned: goal.earned,
+    status: goal.status || 'achieved',
+    started_at: goal.startedAt,
+    completed_at: goal.completedAt,
+    user_id: currentUser.id,
+  });
+  if (error) console.error('Insert completed goal failed:', error);
+  else { state.completedGoals = state.completedGoals.map(g => g.id === goal.id ? { ...g, synced: true } : g); persist(); }
+}
+
+async function loadFromSupabase(silent = false) {
+  if (!currentUser) return;
+  if (!silent) showToast('Loading from Supabase…');
+  try {
+    const [walksRes, activeRes, completedRes] = await Promise.all([
+      sb.from('walks').select('*').eq('user_id', currentUser.id).order('date', { ascending: false }),
+      sb.from('active_goals').select('*').eq('user_id', currentUser.id),
+      sb.from('completed_goals').select('*').eq('user_id', currentUser.id),
+    ]);
+
+    const walks = (walksRes.data || []).map(r => ({
+      id: r.id, date: r.date, dist: r.dist, fare: r.fare,
+      goalId: r.goal_id, goalName: r.goal_name || '', synced: true,
+    }));
+    const activeGoals = (activeRes.data || []).map(r => ({
+      id: r.id, name: r.name, amount: r.amount,
+      startedAt: r.started_at, synced: true,
+    }));
+    const completedGoals = (completedRes.data || []).map(r => ({
+      id: r.id, name: r.name, amount: r.amount, earned: r.earned,
+      status: r.status, startedAt: r.started_at, completedAt: r.completed_at, synced: true,
+    }));
+
+    const fare = state.fare || (walks[0]?.fare ?? 0);
+    state = { fare, walks, activeGoals, completedGoals };
+    walkPage = 1;
+    persist();
+    render();
+    if (!silent) showToast(`✓ Loaded ${walks.length} walks, ${activeGoals.length} goals!`);
+  } catch(err) {
+    console.error('Supabase load failed:', err);
+    if (!silent) showToast('⚠ Load failed: ' + err.message);
+  }
+}
+
+async function clearAllSupabase() {
+  if (!currentUser) return;
+  await Promise.all([
+    sb.from('walks').delete().eq('user_id', currentUser.id),
+    sb.from('active_goals').delete().eq('user_id', currentUser.id),
+    sb.from('completed_goals').delete().eq('user_id', currentUser.id),
+  ]);
+}
+
+// sync status indicator (simplified — no per-row dots needed with Supabase)
+function setSyncStatus(status) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  if (!currentUser) { el.innerHTML = ''; return; }
+  const map = {
+    idle:    { text: 'Synced',       color: 'var(--md-success)', icon: '✓' },
+    syncing: { text: 'Syncing…',     color: 'var(--md-primary)', icon: '↻' },
+    success: { text: 'Synced',       color: 'var(--md-success)', icon: '✓' },
+    error:   { text: 'Sync failed',  color: 'var(--md-error)',   icon: '⚠' },
+  };
+  const s = map[status] || map.idle;
+  el.innerHTML = `<span style="color:${s.color};font-weight:700;">${s.icon} ${s.text}</span>`;
+}
+
+function goPage(p) {
+  const totalPages = Math.ceil(state.walks.length / PAGE_SIZE);
+  if (p < 1 || p > totalPages) return;
+  walkPage = p;
+  render();
+  document.getElementById('logTable').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function goGoalPage(p) {
+  const totalPages = Math.ceil(state.completedGoals.length / PAGE_SIZE);
+  if (p < 1 || p > totalPages) return;
+  goalPage = p;
+  render();
+  document.getElementById('goalsHistorySection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function deleteWalk(id) {
+  const walk = state.walks.find(w => w.id === id);
+  state.walks = state.walks.filter(w => w.id !== id);
+  const totalPages = Math.ceil(state.walks.length / PAGE_SIZE) || 1;
+  if (walkPage > totalPages) walkPage = totalPages;
+  persist(); render();
+  if (walk) await dbDeleteWalk(walk);
+}
+
+async function clearAll() {
+  if (!confirm('This will delete ALL walks, goals and history. This cannot be undone. Are you sure?')) return;
+  showToast('Clearing everything…');
+  await clearAllSupabase();
+  state.walks = [];
+  state.completedGoals = [];
+  state.activeGoals = [];
+  persist();
+  render();
+  showToast('✓ All cleared — fresh start!');
+}
+
+function totalSaved() {
+  return state.walks.reduce((s,w) => s + w.dist * (w.fare ?? state.fare), 0);
+}
+
+function goalEarned(goalId) {
+  return state.walks
+    .filter(w => String(w.goalId) === String(goalId))
+    .reduce((s,w) => s + w.dist * (w.fare ?? state.fare), 0);
+}
+
+async function checkGoalCompletion(goalId) {
+  if (!state.activeGoals || state.activeGoals.length === 0) return;
+  const justCompleted = [];
+  state.activeGoals = state.activeGoals.filter(g => {
+    if (goalId && String(g.id) !== String(goalId)) return true; // only check the goal that just got a walk
+    const earned = goalEarned(g.id);
+    if (earned >= g.amount) {
+      justCompleted.push({ ...g, completedAt: localToday(), earned, status: 'achieved' });
+      return false;
+    }
+    return true;
+  });
+  for (const completed of justCompleted) {
+    state.completedGoals.push(completed);
+    persist();
+    showToast(`🎉 "${completed.name}" achieved!`);
+    await dbInsertCompletedGoal(completed);
+    await dbDeleteActiveGoal(completed.id);
+  }
+}
+
+async function completeGoalManually(id) {
+  if (!state.activeGoals) return;
+  const g = state.activeGoals.find(g => String(g.id) === String(id));
+  if (!g || !confirm(`Abandon "${g.name}"? This will mark it as abandoned.`)) return;
+  const earned = goalEarned(g.id);
+  const completed = { ...g, completedAt: localToday(), earned, status: 'abandoned' };
+  state.completedGoals.push(completed);
+  state.activeGoals = state.activeGoals.filter(x => String(x.id) !== String(id));
+  persist(); render();
+  showToast(`Goal "${g.name}" abandoned.`);
+  await dbInsertCompletedGoal(completed);
+  await dbDeleteActiveGoal(id);
+}
+
+function openGoalModal() {
+  document.getElementById('goalName').value = '';
+  document.getElementById('goalAmount').value = '';
+  document.getElementById('goalModal').classList.add('open');
+}
+function closeGoalModal() { document.getElementById('goalModal').classList.remove('open'); }
+
+async function saveGoal() {
+  const name = document.getElementById('goalName').value.trim() || 'My Goal';
+  const amount = parseFloat(document.getElementById('goalAmount').value);
+  if (!amount || amount <= 0) { showToast('Enter a valid target amount'); return; }
+  if (!state.activeGoals) state.activeGoals = [];
+  if (state.activeGoals.length >= 3) {
+    showToast('⚠ Max 3 active goals — finish one before adding more!');
+    closeGoalModal();
+    return;
+  }
+  const goal = {
+    id: Date.now(), name, amount,
+    startedAt: localToday(),
+  };
+  state.activeGoals.push(goal);
+  persist(); render();
+  closeGoalModal();
+  showToast(`Goal "${name}" created!`);
+  await dbUpsertActiveGoal(goal);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+function calcStreak(walks) {
+  if (!walks.length) return 0;
+  const dates = [...new Set(walks.map(w => w.date))].sort((a,b) => b.localeCompare(a));
+  const today = localToday();
+  if (dates[0] !== today && dates[0] !== prevDay(today)) return 0;
+  let streak = 1;
+  for (let i = 1; i < dates.length; i++) {
+    if (dates[i] === prevDay(dates[i-1])) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function prevDay(d) {
+  const dt = new Date(d); dt.setDate(dt.getDate()-1);
+  return dt.toISOString().split('T')[0];
+}
+
+function getWeekStart() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const w = new Date(d); w.setDate(diff);
+  return w.toISOString().split('T')[0];
+}
+
+function formatDate(d) {
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function render() {
+  const fare = state.fare;
+  const walks = state.walks;
+  const total = totalSaved();
+  const totalDist = walks.reduce((s,w) => s + w.dist, 0);
+
+  const weekStart = getWeekStart();
+  const now = new Date();
+  const monthPrefix = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const weekWalks = walks.filter(w => w.date >= weekStart);
+  const monthWalks = walks.filter(w => w.date.startsWith(monthPrefix));
+  const weekDist = weekWalks.reduce((s,w) => s+w.dist, 0);
+  const monthDist = monthWalks.reduce((s,w) => s+w.dist, 0);
+
+  document.getElementById('statDistance').textContent = `${totalDist.toFixed(1)} km`;
+  document.getElementById('statWalks').textContent = `${walks.length} walk${walks.length !== 1 ? 's' : ''}`;
+  document.getElementById('statSaved').textContent = fmt(total);
+  document.getElementById('statFareInfo').textContent = `current rate: ${state.fare}/km`;
+  document.getElementById('statWeek').textContent = fmt(weekWalks.reduce((s,w) => s + w.dist * (w.fare ?? state.fare), 0));
+  document.getElementById('statWeekDist').textContent = `${weekDist.toFixed(1)} km this week`;
+  document.getElementById('statMonth').textContent = fmt(monthWalks.reduce((s,w) => s + w.dist * (w.fare ?? state.fare), 0));
+  document.getElementById('statMonthDist').textContent = `${monthDist.toFixed(1)} km this month`;
+  document.getElementById('streakBadge').textContent = `🔥 ${calcStreak(walks)} day streak`;
+
+  // Sync status summary
+  const syncEl = document.getElementById('syncStatus');
+  if (syncEl) {
+    if (!currentUser) syncEl.innerHTML = '';
+    else syncEl.innerHTML = `<span style="color:var(--md-success);font-weight:700;">✓ Synced</span>`;
+  }
+
+  // Active goals (multiple)
+  const agSec = document.getElementById('activeGoalSection');
+  const goals = state.activeGoals || [];
+  if (goals.length > 0) {
+    const today = localToday();
+    const cards = goals.map((g, idx) => {
+      const earned = goalEarned(g.id);
+      const pct = Math.min(100, (earned / g.amount) * 100);
+      const remaining = Math.max(0, g.amount - earned);
+      const colorClass = `goal-color-${idx % 3}`;
+      return `
+        <div class="active-goal-card ${colorClass}">
+          <div class="goal-card-inner">
+            <div class="goal-tag">🎯 Active Goal</div>
+            <div class="goal-name-display">${g.name}</div>
+            <div class="goal-amounts-row">
+              <span class="goal-current-val">${fmt(earned)}</span>
+              <span class="goal-of">of</span>
+              <span class="goal-target-val">${fmt(g.amount)}</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:${pct}%"></div>
+            </div>
+            <div class="goal-footer">
+              <div>
+                <div class="goal-pct">${pct.toFixed(0)}% complete</div>
+                <div style="font-size:0.7rem;opacity:0.75;margin-top:0.1rem;">Started ${formatDate(g.startedAt)}</div>
+                <div style="font-size:0.7rem;opacity:0.75;margin-top:0.1rem;">Day ${Math.floor((new Date() - new Date(g.startedAt + 'T00:00:00')) / 86400000) + 1}</div>
+              </div>
+              <div class="goal-actions">
+                <span class="goal-remaining-text">${remaining > 0 ? `${fmt(remaining)} to go` : '🎉 Done!'}</span>
+                <button class="btn btn-white-ghost" style="font-size:0.7rem;padding:0.35rem 0.8rem;opacity:0.75;" onclick="completeGoalManually('${g.id}')">✕ Abandon</button>
+              </div>
+            </div>
+            <div class="goal-log-form" style="margin-top:0.9rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.18);">
+              <div style="display:flex;gap:0.5rem;align-items:flex-end;">
+                <div style="flex:1;">
+                  <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;opacity:0.75;margin-bottom:0.3rem;">Date</div>
+                  <input type="date" id="gDate_${g.id}" value="${today}"
+                    style="width:100%;padding:0.45rem 0.6rem;border-radius:8px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.25);color:#fff;font-size:0.82rem;box-sizing:border-box;">
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;opacity:0.75;margin-bottom:0.3rem;">km</div>
+                  <input type="number" id="gDist_${g.id}" placeholder="3.2" min="0" step="0.1"
+                    style="width:100%;padding:0.45rem 0.6rem;border-radius:8px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.25);color:#fff;font-size:0.82rem;box-sizing:border-box;"
+                    onkeydown="if(event.key==='Enter') logGoalWalk('${g.id}')">
+                </div>
+                <button onclick="logGoalWalk('${g.id}')"
+                  style="padding:0.45rem 0.85rem;border-radius:8px;border:none;background:rgba(255,255,255,0.22);color:#fff;font-weight:800;font-size:0.82rem;cursor:pointer;white-space:nowrap;transition:background 0.15s;"
+                  onmouseover="this.style.background='rgba(255,255,255,0.32)'" onmouseout="this.style.background='rgba(255,255,255,0.22)'">
+                  Log →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    agSec.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+        <span style="font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--md-on-surface-variant);">Active Goals</span>
+        <button class="btn btn-tonal" style="font-size:0.7rem;padding:0.35rem 0.8rem;${goals.length >= 3 ? 'opacity:0.4;cursor:not-allowed;' : ''}" onclick="openGoalModal()" ${goals.length >= 3 ? 'disabled title="Max 3 active goals"' : ''}>+ New Goal</button>
+      </div>
+      <div class="goals-grid">${cards}</div>`;
+  } else {
+    agSec.innerHTML = `
+      <div class="no-goal-placeholder">
+        <div class="no-goal-icon">🎯</div>
+        <div class="no-goal-title">No active goals</div>
+        <div class="no-goal-sub">Set a savings target and track your progress</div>
+        <button class="btn btn-tonal" onclick="openGoalModal()">Create Goal</button>
+      </div>`;
+  }
+
+  // Completed goals — paginated table + mobile cards
+  const ghSec = document.getElementById('goalsHistorySection');
+  if (state.completedGoals.length > 0) {
+    const achieved = state.completedGoals.filter(g => g.status !== 'abandoned').length;
+    const abandoned = state.completedGoals.filter(g => g.status === 'abandoned').length;
+    const sortedGoals = [...state.completedGoals].reverse();
+    const gTotalPages = Math.ceil(sortedGoals.length / PAGE_SIZE);
+    if (goalPage > gTotalPages) goalPage = gTotalPages;
+    const gStart = (goalPage - 1) * PAGE_SIZE;
+    const gPageItems = sortedGoals.slice(gStart, gStart + PAGE_SIZE);
+    const gFrom = gStart + 1;
+    const gTo = Math.min(gStart + PAGE_SIZE, sortedGoals.length);
+
+    const rows = gPageItems.map(g => {
+      const isAbandoned = g.status === 'abandoned';
+      const badge = isAbandoned
+        ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(186,26,26,0.12);color:var(--md-error);font-size:1rem;font-weight:900;" title="Abandoned">✕</span>`
+        : `<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(27,135,58,0.12);color:var(--md-success);font-size:1rem;font-weight:900;" title="Achieved">✓</span>`;
+      return `
+      <tr style="${isAbandoned ? 'opacity:0.72;' : ''}">
+        <td style="text-align:center;">${badge}</td>
+        <td class="dist-cell" style="color:var(--md-on-surface);font-family:'Nunito',sans-serif;font-weight:800;">${g.name}</td>
+        <td class="date-cell">${formatDate(g.startedAt)}</td>
+        <td class="date-cell">${formatDate(g.completedAt)}</td>
+        <td class="saved-cell" style="text-align:right;">${fmt(g.amount)}</td>
+        <td class="total-cell" style="text-align:right;">${fmt(g.earned)}</td>
+      </tr>`;
+    }).join('');
+
+    const goalCards = gPageItems.map(g => {
+      const isAbandoned = g.status === 'abandoned';
+      return `
+        <div class="walk-card-item" style="${isAbandoned ? 'opacity:0.72;' : ''}">
+          <div class="walk-card-left">
+            <div class="walk-card-date">${formatDate(g.startedAt)} → ${formatDate(g.completedAt)}</div>
+            <div class="walk-card-dist">${g.name}</div>
+          </div>
+          <div class="walk-card-right">
+            <div class="walk-card-saved" style="color:${isAbandoned ? 'var(--md-error)' : 'var(--md-success)'};">
+              ${isAbandoned ? '✕' : '✓'} ${fmt(g.earned)}
+            </div>
+            <div class="walk-card-total">of ${fmt(g.amount)}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    ghSec.innerHTML = `
+      <div class="log-card">
+        <div class="card-header">
+          <span class="card-title">Goal History</span>
+          <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+            ${achieved > 0 ? `<span style="font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;color:var(--md-success);">${achieved} achieved 🏆</span>` : ''}
+            ${abandoned > 0 ? `<span style="font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;color:var(--md-error);">${abandoned} abandoned</span>` : ''}
+          </div>
+        </div>
+        <div class="walk-table-wrap">
+          <div class="table-scroll-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:48px;">Status</th>
+                  <th>Goal Name</th>
+                  <th>Started</th>
+                  <th>Ended</th>
+                  <th style="text-align:right;">Target</th>
+                  <th style="text-align:right;">Earned</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+        <div class="walk-cards-wrap">${goalCards}</div>
+        <div class="pagination">
+          <span class="pagination-info">Showing ${gFrom}–${gTo} of ${sortedGoals.length} goals</span>
+          <div class="pagination-pages">
+            <button class="page-btn prev-next" onclick="goGoalPage(${goalPage - 1})" ${goalPage === 1 ? 'disabled' : ''}>‹</button>
+            ${pageButtons(goalPage, gTotalPages)}
+            <button class="page-btn prev-next" onclick="goGoalPage(${goalPage + 1})" ${goalPage === gTotalPages ? 'disabled' : ''}>›</button>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    ghSec.innerHTML = `
+      <div class="no-goal-placeholder" style="margin-top:2rem;">
+        <div class="no-goal-icon">🏆</div>
+        <div class="no-goal-title">No goal history yet</div>
+        <div class="no-goal-sub">Completed and abandoned goals will appear here</div>
+      </div>`;
+  }
+
+  // Walk log — paginated + scrollable
+  if (walks.length === 0) {
+    document.getElementById('logTable').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">👣</div>
+        <div class="empty-title">No walks yet</div>
+        <div class="empty-sub">Start logging to see your savings grow!</div>
+      </div>`;
+    return;
+  }
+
+  // Compute running totals on full sorted list using per-walk fare
+  let running = 0;
+  const withTotals = [...walks].sort((a,b) => a.date.localeCompare(b.date)).map(w => {
+    const wFare = w.fare ?? state.fare;
+    running += w.dist * wFare;
+    return { ...w, wFare, runTotal: running };
+  });
+  withTotals.sort((a,b) => b.date.localeCompare(a.date));
+
+  const totalPages = Math.ceil(withTotals.length / PAGE_SIZE);
+  if (walkPage > totalPages) walkPage = totalPages;
+  const start = (walkPage - 1) * PAGE_SIZE;
+  const pageItems = withTotals.slice(start, start + PAGE_SIZE);
+
+  // Build page number buttons (show max 7 buttons with ellipsis)
+  function pageButtons(current, total) {
+    if (total <= 1) return '';
+    let pages = [];
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages = [1];
+      if (current > 3) pages.push('…');
+      for (let i = Math.max(2, current-1); i <= Math.min(total-1, current+1); i++) pages.push(i);
+      if (current < total - 2) pages.push('…');
+      pages.push(total);
+    }
+    return pages.map(p => {
+      if (p === '…') return `<span style="padding:0 0.2rem;color:var(--md-outline);">…</span>`;
+      return `<button class="page-btn${p === current ? ' active' : ''}" onclick="goPage(${p})">${p}</button>`;
+    }).join('');
+  }
+
+  const fromEntry = start + 1;
+  const toEntry = Math.min(start + PAGE_SIZE, withTotals.length);
+
+  document.getElementById('logTable').innerHTML = `
+    <div class="walk-table-wrap">
+      <div class="table-scroll-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Distance</th>
+              <th>Fare/km</th>
+              <th>Saved</th>
+              <th>Total</th>
+              <th>Goal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${pageItems.map(w => `
+              <tr>
+                <td class="date-cell">${formatDate(w.date)}</td>
+                <td class="dist-cell">${w.dist.toFixed(1)} km</td>
+                <td class="date-cell" style="text-align:right;">${w.wFare}</td>
+                <td class="saved-cell">${fmt(w.dist * w.wFare)}</td>
+                <td class="total-cell">${fmt(w.runTotal)}</td>
+                <td style="font-size:0.75rem;color:var(--md-on-surface-variant);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${w.goalName || ''}">${w.goalName || '—'}</td>
+                <td><button class="del-btn" onclick="deleteWalk(${w.id})">✕</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="walk-cards-wrap">
+      ${pageItems.map(w => `
+        <div class="walk-card-item">
+          <div class="walk-card-left">
+            <div class="walk-card-date">${formatDate(w.date)}</div>
+            <div class="walk-card-dist">${w.dist.toFixed(1)} km</div>
+            ${w.goalName ? `<div class="walk-card-goal">🎯 ${w.goalName}</div>` : ''}
+          </div>
+          <div class="walk-card-right">
+            <div class="walk-card-saved">+${fmt(w.dist * w.wFare)}</div>
+            <div class="walk-card-total">total ${fmt(w.runTotal)}</div>
+          </div>
+          <button class="del-btn" onclick="deleteWalk(${w.id})" style="margin-left:0.5rem;">✕</button>
+        </div>`).join('')}
+    </div>
+    <div class="pagination">
+      <span class="pagination-info">Showing ${fromEntry}–${toEntry} of ${withTotals.length} walks</span>
+      <div class="pagination-pages">
+        <button class="page-btn prev-next" onclick="goPage(${walkPage - 1})" ${walkPage === 1 ? 'disabled' : ''}>‹</button>
+        ${pageButtons(walkPage, totalPages)}
+        <button class="page-btn prev-next" onclick="goPage(${walkPage + 1})" ${walkPage === totalPages ? 'disabled' : ''}>›</button>
+      </div>
+    </div>`;
+}
+
+function switchTab(tab) {
+  // Hide all panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  // Show selected
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.getElementById(`nav-${tab}`).classList.add('active');
+  // Scroll to top on tab switch
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function localToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+init();
+</script>
+</body>
+</html>
