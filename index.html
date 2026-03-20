@@ -717,6 +717,18 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
 
 .toast.show { transform: translateY(0); opacity: 1; }
 
+.theme-btn {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0.6rem 0.75rem;
+  background: var(--md-surface-variant);
+  border: 2px solid transparent;
+  border-radius: 12px; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  min-width: 64px;
+}
+.theme-btn:hover { background: var(--md-primary-container); }
+.theme-btn.active { border-color: var(--md-primary); background: var(--md-primary-container); }
+
 /* Password field with eye toggle */
 .password-wrap { position: relative; display: flex; align-items: center; }
 .password-wrap input { flex: 1; padding-right: 2.5rem !important; }
@@ -736,7 +748,7 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
 <header>
   <div class="header-inner">
     <div>
-      <div class="app-title" style="display:flex;align-items:center;gap:0.5rem;"><span style="font-weight:900;letter-spacing:-0.01em;"><span style="color:#6750A4;">Walk</span><span style="color:#625B71;">2</span><span style="color:#7D5260;">Save</span></span></div>
+      <div class="app-title" style="display:flex;align-items:center;gap:0.5rem;"><span style="font-weight:900;letter-spacing:-0.01em;"><span class="logo-walk" style="color:#6750A4;">Walk</span><span class="logo-2" style="color:#625B71;">2</span><span class="logo-save" style="color:#7D5260;">Save</span></span></div>
       <div class="app-tagline">Turn your steps into savings</div>
       <div style="font-family:'Nunito Sans',sans-serif;font-size:0.6rem;color:#aab8a6;margin-top:0.25rem;letter-spacing:0.04em;">v1.0.0</div>
     </div>
@@ -799,7 +811,15 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
   <!-- ── Tab: Settings ─────────────────────────────────────────── -->
   <div class="tab-panel" id="tab-settings">
 
-    <!-- Fare Card -->
+    <!-- 1. Account Card -->
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="card-header"><span class="card-title">Account</span></div>
+      <div class="card-body">
+        <div id="authSection"><!-- filled by renderAuth() --></div>
+      </div>
+    </div>
+
+    <!-- 2. Transport Fare Card -->
     <div class="card" style="margin-bottom:1rem;">
       <div class="card-header"><span class="card-title">Transport Fare</span></div>
       <div class="card-body">
@@ -811,15 +831,57 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
       </div>
     </div>
 
-    <!-- Account Card -->
+    <!-- 3. Theme Switcher Card -->
     <div class="card" style="margin-bottom:1rem;">
-      <div class="card-header"><span class="card-title">Account</span></div>
+      <div class="card-header"><span class="card-title">Theme</span></div>
       <div class="card-body">
-        <div id="authSection"><!-- filled by renderAuth() --></div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+          <button class="theme-btn" id="theme-green" onclick="applyTheme('green')" title="Health & Walk">
+            <span style="display:flex;gap:3px;margin-bottom:0.35rem;">
+              <span style="width:14px;height:14px;border-radius:50%;background:#2E7D32;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#C93D1B;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#4F6354;display:inline-block;"></span>
+            </span>
+            <span style="font-size:0.68rem;font-weight:700;">Forest</span>
+          </button>
+          <button class="theme-btn" id="theme-purple" onclick="applyTheme('purple')" title="Purple M3">
+            <span style="display:flex;gap:3px;margin-bottom:0.35rem;">
+              <span style="width:14px;height:14px;border-radius:50%;background:#6750A4;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#7D5260;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#625B71;display:inline-block;"></span>
+            </span>
+            <span style="font-size:0.68rem;font-weight:700;">Violet</span>
+          </button>
+          <button class="theme-btn" id="theme-ocean" onclick="applyTheme('ocean')" title="Ocean">
+            <span style="display:flex;gap:3px;margin-bottom:0.35rem;">
+              <span style="width:14px;height:14px;border-radius:50%;background:#0277BD;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#00838F;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#01579B;display:inline-block;"></span>
+            </span>
+            <span style="font-size:0.68rem;font-weight:700;">Ocean</span>
+          </button>
+          <button class="theme-btn" id="theme-ember" onclick="applyTheme('ember')" title="Ember">
+            <span style="display:flex;gap:3px;margin-bottom:0.35rem;">
+              <span style="width:14px;height:14px;border-radius:50%;background:#BF360C;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#E65100;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#4E342E;display:inline-block;"></span>
+            </span>
+            <span style="font-size:0.68rem;font-weight:700;">Ember</span>
+          </button>
+          <button class="theme-btn" id="theme-slate" onclick="applyTheme('slate')" title="Slate">
+            <span style="display:flex;gap:3px;margin-bottom:0.35rem;">
+              <span style="width:14px;height:14px;border-radius:50%;background:#37474F;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#546E7A;display:inline-block;"></span>
+              <span style="width:14px;height:14px;border-radius:50%;background:#263238;display:inline-block;"></span>
+            </span>
+            <span style="font-size:0.68rem;font-weight:700;">Slate</span>
+          </button>
+        </div>
+        <p style="font-size:0.7rem;color:var(--md-on-surface-variant);margin-top:0.75rem;line-height:1.5;">Choose a colour theme for the app. Your choice is saved automatically.</p>
       </div>
     </div>
 
-    <!-- Danger Zone Card -->
+    <!-- 4. Danger Zone Card -->
     <div class="card" style="margin-bottom:1rem;">
       <div class="card-body" style="padding-top:1rem;">
         <div style="background:rgba(186,26,26,0.07);border:1.5px solid rgba(186,26,26,0.2);border-radius:12px;padding:0.85rem 1rem;">
@@ -830,7 +892,7 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
       </div>
     </div>
 
-    <!-- Card 2: How to Use (collapsible) -->
+    <!-- 5. How to Use (collapsible) -->
     <div class="card" style="margin-bottom:1rem;">
       <div class="card-header" style="cursor:pointer;user-select:none;" onclick="toggleGuide()">
         <span class="card-title">How to Use</span>
@@ -839,20 +901,19 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
       <div id="guideBody" style="display:none;">
         <div class="card-body">
           <div style="font-size:0.82rem;color:var(--md-on-surface);line-height:1.8;">
-            <div style="margin-bottom:0.6rem;"><strong>1. Set your fare</strong> — Enter your average transport cost per km at the top of this page. This is used to calculate your savings.</div>
-            <div style="margin-bottom:0.6rem;"><strong>2. Create a goal</strong> — Tap <em>+ New Goal</em> on the Home tab. Give it a name (e.g. "New headphones") and a target amount.</div>
-            <div style="margin-bottom:0.6rem;"><strong>3. Log a walk</strong> — Each active goal card has a date and km field at the bottom. Enter the distance you walked and tap <em>Log →</em>. Your savings are calculated automatically.</div>
-            <div style="margin-bottom:0.6rem;"><strong>4. Track progress</strong> — The goal card shows your progress bar, earned amount, and how many days the goal has been active.</div>
-            <div style="margin-bottom:0.6rem;"><strong>5. Walk Log</strong> — The Walk Log tab shows all your walks with totals. Each walk is tagged to the goal it was logged under.</div>
+            <div style="margin-bottom:0.6rem;"><strong>1. Set your fare</strong> — Enter your transport cost per km in the Transport Fare card above.</div>
+            <div style="margin-bottom:0.6rem;"><strong>2. Create a goal</strong> — Tap <em>+ New Goal</em> on the Home tab. Give it a name and a target amount.</div>
+            <div style="margin-bottom:0.6rem;"><strong>3. Log a walk</strong> — Each active goal card has a date and km field. Enter your distance and tap <em>Log →</em>. Savings are calculated automatically.</div>
+            <div style="margin-bottom:0.6rem;"><strong>4. Track progress</strong> — The goal card shows your progress bar, earned amount, and days active.</div>
+            <div style="margin-bottom:0.6rem;"><strong>5. Walk Log</strong> — The Walk Log tab shows all your walks with totals, tagged to the goal they were logged under.</div>
             <div style="margin-bottom:0.6rem;"><strong>6. Goal History</strong> — Completed goals move to the Goals tab. Achieved goals show ✓, abandoned goals show ✕.</div>
-            <div><strong>7. Cross-device sync</strong> — Sign in from the Settings tab. Your data syncs automatically across all your devices.</div>
+            <div><strong>7. Cross-device sync</strong> — Sign in from the Account card above. Your data syncs automatically across all your devices.</div>
           </div>
         </div>
       </div>
     </div>
 
-
-    <!-- Card 3: About -->
+    <!-- 6. About Walk2Save -->
     <div class="card">
       <div class="card-header"><span class="card-title">About Walk2Save</span></div>
       <div class="card-body">
@@ -864,7 +925,6 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
         </div>
       </div>
     </div>
-
 
   </div>
 
@@ -984,6 +1044,7 @@ async function init() {
   }
   // Ensure auth section is always rendered
   renderAuth();
+  initTheme();
 }
 
 function updateFare() {
@@ -1750,6 +1811,93 @@ function render() {
         <button class="page-btn prev-next" onclick="goPage(${walkPage + 1})" ${walkPage === totalPages ? 'disabled' : ''}>›</button>
       </div>
     </div>`;
+}
+
+// ── Theme Switcher ────────────────────────────────────────────────────
+const THEMES = {
+  green: {
+    primary:'#2E7D32', primaryContainer:'#A1EAB5', onPrimaryContainer:'#1B5E20',
+    secondary:'#4F6354', surfaceVariant:'#F0F0F0', outline:'#6B7B6E', outlineVariant:'#C9E6C2',
+    logoWalk:'#2E4F3F', logo2:'#8C2A12', logoSave:'#C93D1B',
+    authBtn:'#263238', navActive:'#4F6354',
+    goalCard0:'#C93D1B', goalCard1:'#8C2A12', goalCard2:'#4F6354',
+    statBlue:'#8C2A12', statGreen:'#FF8A65', statIndigo:'#1B5E20', statSlate:'#388E3C',
+  },
+  purple: {
+    primary:'#6750A4', primaryContainer:'#EADDFF', onPrimaryContainer:'#21005D',
+    secondary:'#625B71', surfaceVariant:'#E7E0EC', outline:'#79747E', outlineVariant:'#CAC4D0',
+    logoWalk:'#6750A4', logo2:'#625B71', logoSave:'#7D5260',
+    authBtn:'#625B71', navActive:'#7D5260',
+    goalCard0:'#6750A4', goalCard1:'#7D5260', goalCard2:'#625B71',
+    statBlue:'#7D5260', statGreen:'#625B71', statIndigo:'#7D5260', statSlate:'#625B71',
+  },
+  ocean: {
+    primary:'#0277BD', primaryContainer:'#B3E5FC', onPrimaryContainer:'#01579B',
+    secondary:'#00838F', surfaceVariant:'#E0F7FA', outline:'#006064', outlineVariant:'#B2EBF2',
+    logoWalk:'#01579B', logo2:'#006064', logoSave:'#00838F',
+    authBtn:'#01579B', navActive:'#0277BD',
+    goalCard0:'#0277BD', goalCard1:'#00838F', goalCard2:'#01579B',
+    statBlue:'#0277BD', statGreen:'#00838F', statIndigo:'#01579B', statSlate:'#006064',
+  },
+  ember: {
+    primary:'#BF360C', primaryContainer:'#FFCCBC', onPrimaryContainer:'#7B1D00',
+    secondary:'#4E342E', surfaceVariant:'#EFEBE9', outline:'#6D4C41', outlineVariant:'#D7CCC8',
+    logoWalk:'#7B1D00', logo2:'#BF360C', logoSave:'#E65100',
+    authBtn:'#4E342E', navActive:'#BF360C',
+    goalCard0:'#BF360C', goalCard1:'#E65100', goalCard2:'#4E342E',
+    statBlue:'#BF360C', statGreen:'#E65100', statIndigo:'#4E342E', statSlate:'#6D4C41',
+  },
+  slate: {
+    primary:'#37474F', primaryContainer:'#CFD8DC', onPrimaryContainer:'#102027',
+    secondary:'#546E7A', surfaceVariant:'#ECEFF1', outline:'#607D8B', outlineVariant:'#B0BEC5',
+    logoWalk:'#102027', logo2:'#37474F', logoSave:'#546E7A',
+    authBtn:'#263238', navActive:'#37474F',
+    goalCard0:'#37474F', goalCard1:'#546E7A', goalCard2:'#263238',
+    statBlue:'#37474F', statGreen:'#546E7A', statIndigo:'#263238', statSlate:'#607D8B',
+  },
+};
+
+function applyTheme(name) {
+  const t = THEMES[name];
+  if (!t) return;
+  try { localStorage.setItem('w2s_theme', name); } catch(e) {}
+  document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.getElementById('theme-' + name);
+  if (btn) btn.classList.add('active');
+  var root = document.documentElement;
+  root.style.setProperty('--md-primary', t.primary);
+  root.style.setProperty('--md-primary-container', t.primaryContainer);
+  root.style.setProperty('--md-on-primary-container', t.onPrimaryContainer);
+  root.style.setProperty('--md-secondary', t.secondary);
+  root.style.setProperty('--md-surface-variant', t.surfaceVariant);
+  root.style.setProperty('--md-outline', t.outline);
+  root.style.setProperty('--md-outline-variant', t.outlineVariant);
+  document.querySelectorAll('.logo-walk').forEach(function(el) { el.style.color = t.logoWalk; });
+  document.querySelectorAll('.logo-2').forEach(function(el) { el.style.color = t.logo2; });
+  document.querySelectorAll('.logo-save').forEach(function(el) { el.style.color = t.logoSave; });
+  var styleEl = document.getElementById('themeStyle');
+  if (!styleEl) { styleEl = document.createElement('style'); styleEl.id = 'themeStyle'; document.head.appendChild(styleEl); }
+  styleEl.textContent =
+    '.nav-tab.active{color:' + t.navActive + '!important}' +
+    '.nav-tab.active::before{background:' + t.navActive + '!important}' +
+    '.nav-tab:not(.active):hover{color:' + t.navActive + '!important}' +
+    '.active-goal-card.goal-color-0{background:' + t.goalCard0 + '!important}' +
+    '.active-goal-card.goal-color-1{background:' + t.goalCard1 + '!important}' +
+    '.active-goal-card.goal-color-2{background:' + t.goalCard2 + '!important}' +
+    '.stat-card.blue{background:' + t.statBlue + '!important}' +
+    '.stat-card.green{background:' + t.statGreen + '!important}' +
+    '.stat-card.indigo{background:' + t.statIndigo + '!important}' +
+    '.stat-card.slate{background:' + t.statSlate + '!important}' +
+    '.header-auth-btn{color:' + t.authBtn + '!important;border-color:' + t.authBtn + '!important}' +
+    '.header-auth-btn:hover{background:' + t.authBtn + '!important;color:#fff!important}' +
+    '.btn-tonal{background:' + t.primaryContainer + '!important;color:' + t.onPrimaryContainer + '!important}';
+  renderAuth();
+}
+
+function initTheme() {
+  var saved = 'purple';
+  try { saved = localStorage.getItem('w2s_theme') || 'purple'; } catch(e) {}
+  applyTheme(saved);
 }
 
 function toggleGuide() {
