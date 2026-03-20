@@ -23,6 +23,8 @@ input[type=number] { -moz-appearance: textfield; }
   --md-tertiary-container: #FFE0CC;
   --md-on-tertiary-container: #4A1700;
   --md-surface: #F6F8FF;
+  --md-background: #F0EDFA;
+  --md-nav-bg: #F3F0FA;
   --md-surface-variant: #E7E0EC;
   --md-surface-container: #ECEEF8;
   --md-surface-container-high: #E6E8F2;
@@ -45,7 +47,7 @@ input[type=number] { -moz-appearance: textfield; }
 }
 
 body {
-  background: #ECF0FF;
+  background: var(--md-background);
   color: var(--md-on-surface);
   font-family: 'Nunito Sans', sans-serif;
   min-height: 100vh;
@@ -53,7 +55,7 @@ body {
 }
 
 header {
-  background: #FFFBFE;
+  background: var(--md-surface);
   border-bottom: 1px solid #e8ede8;
   padding: 1.5rem 1.75rem 7rem;
   position: relative;
@@ -650,8 +652,8 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
   position: fixed;
   bottom: 0; left: 0; right: 0;
   height: 64px;
-  background: #ffffff;
-  border-top: 1px solid #e8ede8;
+  background: var(--md-nav-bg);
+  border-top: 1px solid var(--md-outline-variant);
   display: flex;
   align-items: stretch;
   z-index: 200;
@@ -1816,6 +1818,8 @@ function render() {
 // ── Theme Switcher ────────────────────────────────────────────────────
 const THEMES = {
   green: {
+    headerBg:'#F1F8F1', bodyBg:'#EDF4ED', navBg:'#F1F8F1',
+    onSurface:'#161D17', onSurfaceVariant:'#3C4B3E', outline:'#6C7B6D', outlineVariant:'#C1CDBE',
     primary:'#2E7D32', primaryContainer:'#A1EAB5', onPrimaryContainer:'#1B5E20',
     secondary:'#4F6354', surfaceVariant:'#F0F0F0', outline:'#6B7B6E', outlineVariant:'#C9E6C2',
     logoWalk:'#2E4F3F', logo2:'#8C2A12', logoSave:'#C93D1B',
@@ -1824,6 +1828,8 @@ const THEMES = {
     statBlue:'#8C2A12', statGreen:'#FF8A65', statIndigo:'#1B5E20', statSlate:'#388E3C',
   },
   purple: {
+    headerBg:'#F3F0FA', bodyBg:'#EDE8F5', navBg:'#F3F0FA',
+    onSurface:'#1C1B1F', onSurfaceVariant:'#44475F', outline:'#79747E', outlineVariant:'#CAC4D0',
     primary:'#6750A4', primaryContainer:'#EADDFF', onPrimaryContainer:'#21005D',
     secondary:'#625B71', surfaceVariant:'#E7E0EC', outline:'#79747E', outlineVariant:'#CAC4D0',
     logoWalk:'#6750A4', logo2:'#625B71', logoSave:'#7D5260',
@@ -1832,6 +1838,8 @@ const THEMES = {
     statBlue:'#7D5260', statGreen:'#625B71', statIndigo:'#7D5260', statSlate:'#625B71',
   },
   ocean: {
+    headerBg:'#EDF6FC', bodyBg:'#E5F4FB', navBg:'#EDF6FC',
+    onSurface:'#0D1B20', onSurfaceVariant:'#354A50', outline:'#5F7882', outlineVariant:'#BDD0D8',
     primary:'#0277BD', primaryContainer:'#B3E5FC', onPrimaryContainer:'#01579B',
     secondary:'#00838F', surfaceVariant:'#E0F7FA', outline:'#006064', outlineVariant:'#B2EBF2',
     logoWalk:'#01579B', logo2:'#006064', logoSave:'#00838F',
@@ -1840,6 +1848,8 @@ const THEMES = {
     statBlue:'#0277BD', statGreen:'#00838F', statIndigo:'#01579B', statSlate:'#006064',
   },
   ember: {
+    headerBg:'#FBF0EC', bodyBg:'#F9EBE5', navBg:'#FBF0EC',
+    onSurface:'#201A17', onSurfaceVariant:'#52443C', outline:'#85736A', outlineVariant:'#D8C2B8',
     primary:'#BF360C', primaryContainer:'#FFCCBC', onPrimaryContainer:'#7B1D00',
     secondary:'#4E342E', surfaceVariant:'#EFEBE9', outline:'#6D4C41', outlineVariant:'#D7CCC8',
     logoWalk:'#7B1D00', logo2:'#BF360C', logoSave:'#E65100',
@@ -1848,6 +1858,8 @@ const THEMES = {
     statBlue:'#BF360C', statGreen:'#E65100', statIndigo:'#4E342E', statSlate:'#6D4C41',
   },
   slate: {
+    headerBg:'#EEF1F2', bodyBg:'#E7ECEE', navBg:'#EEF1F2',
+    onSurface:'#191C1E', onSurfaceVariant:'#3F484A', outline:'#6F797B', outlineVariant:'#BFC8CA',
     primary:'#37474F', primaryContainer:'#CFD8DC', onPrimaryContainer:'#102027',
     secondary:'#546E7A', surfaceVariant:'#ECEFF1', outline:'#607D8B', outlineVariant:'#B0BEC5',
     logoWalk:'#102027', logo2:'#37474F', logoSave:'#546E7A',
@@ -1865,6 +1877,9 @@ function applyTheme(name) {
   var btn = document.getElementById('theme-' + name);
   if (btn) btn.classList.add('active');
   var root = document.documentElement;
+  root.style.setProperty('--md-surface', t.headerBg);
+  root.style.setProperty('--md-background', t.bodyBg);
+  root.style.setProperty('--md-nav-bg', t.navBg);
   root.style.setProperty('--md-primary', t.primary);
   root.style.setProperty('--md-primary-container', t.primaryContainer);
   root.style.setProperty('--md-on-primary-container', t.onPrimaryContainer);
@@ -1872,6 +1887,8 @@ function applyTheme(name) {
   root.style.setProperty('--md-surface-variant', t.surfaceVariant);
   root.style.setProperty('--md-outline', t.outline);
   root.style.setProperty('--md-outline-variant', t.outlineVariant);
+  root.style.setProperty('--md-on-surface', t.onSurface);
+  root.style.setProperty('--md-on-surface-variant', t.onSurfaceVariant);
   document.querySelectorAll('.logo-walk').forEach(function(el) { el.style.color = t.logoWalk; });
   document.querySelectorAll('.logo-2').forEach(function(el) { el.style.color = t.logo2; });
   document.querySelectorAll('.logo-save').forEach(function(el) { el.style.color = t.logoSave; });
@@ -1890,7 +1907,8 @@ function applyTheme(name) {
     '.stat-card.slate{background:' + t.statSlate + '!important}' +
     '.header-auth-btn{color:' + t.authBtn + '!important;border-color:' + t.authBtn + '!important}' +
     '.header-auth-btn:hover{background:' + t.authBtn + '!important;color:#fff!important}' +
-    '.btn-tonal{background:' + t.primaryContainer + '!important;color:' + t.onPrimaryContainer + '!important}';
+    '.btn-tonal{background:' + t.primaryContainer + '!important;color:' + t.onPrimaryContainer + '!important}' +
+    'body,p,div,span,h1,h2,h3,h4,h5,h6{--md-on-surface:' + t.onSurface + ';--md-on-surface-variant:' + t.onSurfaceVariant + ';}';
   renderAuth();
 }
 
