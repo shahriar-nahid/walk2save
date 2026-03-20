@@ -12,27 +12,27 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin
 input[type=number] { -moz-appearance: textfield; }
 
 :root {
-  --md-primary: #2E7D32;
-  --md-primary-container: #A1EAB5;
+  --md-primary: #6750A4;
+  --md-primary-container: #EADDFF;
   --md-on-primary: #fff;
-  --md-on-primary-container: #1B5E20;
-  --md-secondary: #4F6354;
+  --md-on-primary-container: #21005D;
+  --md-secondary: #625B71;
   --md-secondary-container: #B2DFDB;
   --md-on-secondary-container: #00251F;
   --md-tertiary: #E65100;
   --md-tertiary-container: #FFE0CC;
   --md-on-tertiary-container: #4A1700;
   --md-surface: #F6F8FF;
-  --md-surface-variant: #E1E2EC;
+  --md-surface-variant: #E7E0EC;
   --md-surface-container: #ECEEF8;
   --md-surface-container-high: #E6E8F2;
   --md-on-surface: #1A1C25;
   --md-on-surface-variant: #44465F;
-  --md-outline: #757790;
-  --md-outline-variant: #C5C6D8;
+  --md-outline: #79747E;
+  --md-outline-variant: #CAC4D0;
   --md-error: #B3261E;
   --md-error-container: #FFDAD6;
-  --md-success: #2E7D32;
+  --md-success: #6750A4;
   --md-success-container: #C8F5D4;
   --md-gold: #B5570A;
   --md-gold-container: #FFDCC2;
@@ -94,9 +94,9 @@ header {
   display: inline-flex; align-items: center; gap: 0.4rem;
   padding: 0.35rem 0.85rem;
   border-radius: 20px;
-  border: 1.5px solid #263238;
+  border: 1.5px solid #625B71;
   background: transparent;
-  color: #263238;
+  color: #625B71;
   font-family: 'Nunito', sans-serif;
   font-size: 0.68rem;
   font-weight: 800;
@@ -104,7 +104,7 @@ header {
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
 }
-.header-auth-btn:hover { background: #263238; color: #fff; }
+.header-auth-btn:hover { background: #625B71; color: #fff; }
 
 .btn {
   font-family: 'Nunito', sans-serif;
@@ -121,7 +121,7 @@ header {
 
 .btn-filled { background: #fff; color: var(--md-primary); box-shadow: var(--elevation-1); }
 .btn-filled:hover { background: #f0f3ff; box-shadow: var(--elevation-2); }
-.btn-tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.btn-tonal { background: #EADDFF; color: var(--md-on-primary-container); }
 .btn-tonal:hover { filter: brightness(0.95); }
 .btn-tonal-green { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
 .btn-tonal-green:hover { filter: brightness(0.95); }
@@ -155,10 +155,10 @@ header {
   box-shadow: var(--elevation-2);
 }
 
-.stat-card.blue   { background: #8C2A12; color:#fff; }
-.stat-card.green  { background: #FF8A65; color:#fff; }
-.stat-card.indigo { background: #1B5E20; color:#fff; }
-.stat-card.slate  { background: #388E3C; color:#fff; }
+.stat-card.blue   { background: #7D5260; color:#fff; }
+.stat-card.green  { background: #625B71; color:#fff; }
+.stat-card.indigo { background: #7D5260; color:#fff; }
+.stat-card.slate  { background: #625B71; color:#fff; }
 
 .stat-label {
   font-size: 0.65rem;
@@ -216,7 +216,7 @@ header {
 }
 
 .fare-pill:focus-within {
-  border-color: #2E7D32;
+  border-color: #6750A4;
   background: #fff;
 }
 
@@ -353,9 +353,9 @@ header {
   pointer-events: none;
 }
 /* Warm bold dark gradients for each goal slot */
-.goal-color-0 { background: #C93D1B; }
-.goal-color-1 { background: #8C2A12; }
-.goal-color-2 { background: #4F6354; }
+.goal-color-0 { background: #6750A4; }
+.goal-color-1 { background: #7D5260; }
+.goal-color-2 { background: #625B71; }
 .goal-color-3 { background: linear-gradient(135deg,#880E4F,#AD1457); }
 .goal-color-4 { background: linear-gradient(135deg,#4A148C,#6A1B9A); }
 
@@ -679,9 +679,9 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
   position: relative;
 }
 .nav-tab svg { transition: transform 0.2s; }
-.nav-tab.active { color: #4F6354; }
+.nav-tab.active { color: #7D5260; }
 .nav-tab.active svg { transform: scale(1.15); }
-.nav-tab:not(.active):hover { color: #4F6354; }
+.nav-tab:not(.active):hover { color: #7D5260; }
 
 /* Active indicator pill */
 .nav-tab.active::before {
@@ -690,7 +690,7 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
   top: 0;
   width: 40px;
   height: 3px;
-  background: #4F6354;
+  background: #7D5260;
   border-radius: 0 0 4px 4px;
 }
 
@@ -736,7 +736,7 @@ td.total-cell { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(
 <header>
   <div class="header-inner">
     <div>
-      <div class="app-title" style="display:flex;align-items:center;gap:0.5rem;"><span style="font-weight:900;letter-spacing:-0.01em;"><span style="color:#2E4F3F;">Walk</span><span style="color:#8C2A12;">2</span><span style="color:#C93D1B;">Save</span></span></div>
+      <div class="app-title" style="display:flex;align-items:center;gap:0.5rem;"><span style="font-weight:900;letter-spacing:-0.01em;"><span style="color:#6750A4;">Walk</span><span style="color:#625B71;">2</span><span style="color:#7D5260;">Save</span></span></div>
       <div class="app-tagline">Turn your steps into savings</div>
       <div style="font-family:'Nunito Sans',sans-serif;font-size:0.6rem;color:#aab8a6;margin-top:0.25rem;letter-spacing:0.04em;">v1.0.0</div>
     </div>
@@ -1067,7 +1067,7 @@ function renderAuth() {
     const email = currentUser.email || 'User';
     headerEl.innerHTML = `
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;">
-        <span style="font-family:'Nunito',sans-serif;font-size:0.68rem;font-weight:700;color:#2E4F3F;">${email}</span>
+        <span style="font-family:'Nunito',sans-serif;font-size:0.68rem;font-weight:700;color:#6750A4;">${email}</span>
         <button class="header-auth-btn" onclick="signOut()">Sign Out</button>
       </div>`;
     if (settingsEl) settingsEl.innerHTML = `
